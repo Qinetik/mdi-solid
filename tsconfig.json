@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -14,12 +14,7 @@ function getRollupInputConfig(target) {
     plugins: [
       babel({
         presets: [
-          ['es2015', { modules: false }],
           target
-        ],
-        plugins: [
-          'transform-object-rest-spread',
-          'external-helpers'
         ]
       })
     ]
@@ -115,18 +110,25 @@ function collectComponents(svgFilesPath) {
   return [...icons, ...aliases];
 }
 
-async function generate(target, jsCb, tsCb, tsAllCb) {
+async function generate(publicDir, target, jsCb, tsCb, tsAllCb, distFolder) {
   const basePath = path.resolve(__dirname, '..');
   const svgFilesPath = path.resolve(basePath, 'node_modules/@mdi/svg/svg');
   const buildPath = path.resolve(basePath, 'build');
   mkdirp(buildPath);
-  const publishPath = path.resolve(basePath, 'publish-' + target);
+  const publishPath = path.resolve(basePath, publicDir);
   mkdirp(publishPath);
-  const distPath = path.resolve(publishPath, 'dist');
+  const distPath = path.resolve(publishPath, distFolder != null ? distFolder :  'dist');
   mkdirp(distPath);
 
   console.log('Collecting components...');
   const components = collectComponents(svgFilesPath);
+
+  console.log('Generating typings...');
+  // create the global typings.d.ts
+  const typingsContent = tsAllCb();
+  fs.writeFileSync(path.resolve(distPath, 'typings.d.ts'), typingsContent);
+
+
   console.log('Generating components...');
   const pathsToUnlink = [];
   for (const [index, component] of components.entries()) {
@@ -138,7 +140,7 @@ async function generate(target, jsCb, tsCb, tsAllCb) {
 
     const fileContent = jsCb(component);
     const inputPath = path.resolve(buildPath, component.fileName);
-    const outputPath = path.resolve(publishPath, component.fileName);
+    const outputPath = path.resolve(distPath, component.fileName);
 
     fs.writeFileSync(inputPath, fileContent);
 
@@ -158,13 +160,8 @@ async function generate(target, jsCb, tsCb, tsAllCb) {
     }
 
     const definitionContent = tsCb(component);
-    fs.writeFileSync(path.join(publishPath, component.defFileName), definitionContent);
+    fs.writeFileSync(path.join(distPath, component.defFileName), definitionContent);
   }
-
-  console.log('Generating typings...');
-  // create the global typings.d.ts
-  const typingsContent = tsAllCb();
-  fs.writeFileSync(path.resolve(distPath, 'typings.d.ts'), typingsContent);
 
   // clean up
   for (const pathToUnlink of pathsToUnlink) {
