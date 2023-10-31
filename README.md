@@ -1,6 +1,10 @@
 # mdi-solid
 [Material Design Icons](https://materialdesignicons.com) for SolidJS packaged as single components supporting SSR & Browser
 
+It's developed for [SolidJS Anique](https://www.npmjs.com/package/@qinetik/anique)
+
+But you can use it without anique as well
+
 ## Installation
 
 ```bash
