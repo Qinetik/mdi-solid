@@ -1,6 +1,6 @@
 {
   "name": "@qinetik/mdi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Material Design Icons for Solid",
   "keywords": [
     "mdi",
@@ -9,6 +9,9 @@
     "design",
     "icons"
   ],
+  "peerDependencies": {
+    "solid-js" : "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Qinetik/mdi-solid.git"
