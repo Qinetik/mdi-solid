@@ -151,7 +151,7 @@ async function generate(publicDir, target, jsCb, tsCb, tsAllCb, distFolder) {
 
     await bundle.write({
       file: outputPath,
-      format: 'cjs'
+      format: 'es'
     });
 
     // remember paths to unlink later
