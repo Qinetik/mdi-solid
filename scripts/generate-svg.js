@@ -121,5 +121,5 @@ async function generate(publicDir, jsCb, distFolder) {
 }
 
 generate("publish-svg", (component) => (
-`<svg width="24" height="24" viewBox="0 0 24 24"><path d="${component.svgPath}" /></svg>`
+`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="${component.svgPath}" /></svg>`
 ), "")
